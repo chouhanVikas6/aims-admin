@@ -1,4 +1,4 @@
-const KEY_B64 = "kCSDOt+K3DKwNvNHBWOpXJKbTrDsIK0L7VdQ3z9LKVM=";
+const KEY_B64 = process.env.NEXT_PUBLIC_ENCRYPTION_KEY_B64 || "";
 
 export type EncryptedPayload = {
     iv: string;
