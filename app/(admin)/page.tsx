@@ -50,6 +50,17 @@ export default function DashboardPage() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
+                const extractCount = (response: unknown): number => {
+                    if (Array.isArray(response)) return response.length;
+                    if (response && typeof response === 'object' && 'meta' in response) {
+                        return (response as { meta: { total: number } }).meta.total;
+                    }
+                    if (response && typeof response === 'object' && 'data' in response) {
+                        return (response as { data: unknown[] }).data.length;
+                    }
+                    return 0;
+                };
+
                 const [users, keys, otps, devices] = await Promise.all([
                     usersApi.getAll().catch(() => []),
                     keysApi.getAll().catch(() => []),
@@ -58,10 +69,10 @@ export default function DashboardPage() {
                 ]);
 
                 setStats({
-                    users: users.length,
-                    keys: keys.length,
-                    otps: otps.length,
-                    devices: devices.length,
+                    users: extractCount(users),
+                    keys: extractCount(keys),
+                    otps: extractCount(otps),
+                    devices: extractCount(devices),
                 });
             } catch (error) {
                 console.error("Failed to fetch stats:", error);

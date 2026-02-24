@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import "flatpickr/dist/flatpickr.css";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -21,10 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} font-outfit antialiased`}>
-        <AuthProvider>
-          <SidebarProvider>{children}</SidebarProvider>
-        </AuthProvider>
+      <body className={`${outfit.variable} font-outfit antialiased dark:bg-gray-900`}>
+        <ThemeProvider>
+          <AuthProvider>
+            <SidebarProvider>{children}</SidebarProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
